@@ -1,0 +1,12 @@
+.taskTable {
+    text-align: left;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+button:hover {
+    background-color: #cfd8dc;
+}

@@ -1,0 +1,265 @@
+<!-- Button trigger modal -->
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page"><h5>Task Details</h5></li>
+    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#addTaskForm ">
+      <i class="fa fa-plus"></i> Add Task
+    </button>    
+  </ol>
+</nav>
+
+<div class="table-responsive-md taskTable">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Quote Type</th>
+        <th scope="col">Quote#</th>
+        <th scope="col">Contact</th>
+        <th scope="col">Task</th>
+        <th scope="col">Due Date</th>
+        <th scope="col">Task Type</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let task of tasks">
+      <tr>
+        <th scope="row">{{task.QuoteType}}</th>
+        <td>{{task.QuoteNumber}}</td>
+        <td>{{task.ContactName}}</td>
+        <td>{{task.TaskDesc}}</td>
+        <td>{{task.DueDate | date:'yyyy/MM/dd'}}</td>
+        <td>{{task.TaskType}}</td>
+        <td>
+          <button class="btn btn-link" data-toggle="modal" data-target="#viewTask" (click)="getTask(task.TaskId)">
+            <i class="fa fa-eye"></i>
+          </button>
+          <button class="btn btn-link" data-toggle="modal" data-target="#editTask" (click)="getTask(task.TaskId)">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-link" data-toggle="modal" data-target="#deleteTask" (click)="getTask(task.TaskId)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Task Form -->
+<div class="modal fade" id="addTaskForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLongTitle">Add Task</h2>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="addTask(addTaskFrom)" #addTaskFrom="ngForm">
+          <div class="form-group">
+            <label for="quoteNumber">Quote#</label>
+            <input type="number" class="form-control" 
+            [(ngModel)]="quoteNumber" name="quoteNumber"
+              required>
+            <!-- <div [hidden]="!quoteNumber.required" class="alert alert-danger">
+              Quote# is required
+            </div> -->
+          </div>
+          <div class="form-group">
+            <label>Quote Type</label>
+            <input type="text" class="form-control" 
+            [(ngModel)]="quoteType" name="quoteType" required>
+            <!-- <div [hidden]="!quoteType.required" class="alert alert-danger">
+              Quote Type is required
+            </div> -->
+          </div>
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" class="form-control"
+             [(ngModel)]="dueDate" name="dueDate" required>
+             <!-- <div [hidden]="!dueDate.required" class="alert alert-danger">
+              Due Date is required
+            </div> -->
+          </div>
+          <div class="form-group">
+            <label>Contact Name</label>
+            <input type="text" class="form-control" 
+            [(ngModel)]="contactName" name="contactName" required>
+            <!-- <div [hidden]="!contactName.required" class="alert alert-danger">
+              Contact Name is required
+            </div> -->
+          </div>
+          <div class="form-group">
+            <label>Task Type</label>
+            <input type="text" class="form-control" 
+            [(ngModel)]="taskType" name="taskType" required>
+            <!-- <div [hidden]="!taskType.required" class="alert alert-danger">
+              Task Type is required
+            </div> -->
+          </div>
+          <div class="form-group">
+            <label>Task Description</label>
+            <textarea class="form-control" rows="5" 
+            [(ngModel)]="taskDesc" name="taskDesc" required></textarea>
+            <!-- <div [hidden]="!taskDesc.required" class="alert alert-danger">
+              Task Type is required
+            </div> -->
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!addTaskFrom.form.valid">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Task -->
+<div class="modal fade" id="viewTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLongTitle">View Task</h2>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <th>Quote Type</th>
+              <td>
+                {{task.QuoteType}}
+              </td>
+            </tr>
+            <tr>
+              <th>Quote#</th>
+              <td>
+                {{task.QuoteNumber}}
+              </td>
+            </tr>
+            <tr>
+              <th>Task Type</th>
+              <td>
+                {{task.TaskType}}
+              </td>
+            </tr>
+            <tr>
+              <th>Contact Name</th>
+              <td>
+                {{task.ContactName}}
+              </td>
+            </tr>
+            <tr>
+              <th>Due Date</th>
+              <td>
+                {{task.DueDate}}
+              </td>
+            </tr>
+            <tr>
+              <th>Task Description</th>
+              <td>
+                {{task.TaskDesc}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Task -->
+<div class="modal fade" id="editTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLongTitle">Update Task</h2>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateTask(editTaskFrom, task.TaskId)" #editTaskFrom="ngForm">
+          <div class="form-group">
+            <label for="taskStatus">Task Status</label>
+            <select class="form-control" id="taskStatus">
+              <option>Open</option>
+              <option>Close</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Quote#</label>
+            <input type="number" class="form-control" [(ngModel)]="task.QuoteNumber"
+              name="quoteNumber" required>
+              <!-- <div [hidden]="task.QuoteNumber.required" class="alert alert-danger">
+                Quote# is required
+              </div> -->
+          </div>
+          <div class="form-group">
+            <label>Quote Type</label>
+            <input type="text" class="form-control" [(ngModel)]="task.QuoteType"
+              name="quoteType" required>
+              <!-- <div [hidden]="!quoteType.required" class="alert alert-danger">
+                Quote Type is required
+              </div> -->
+          </div>
+          <div class=" form-group">
+            <label>Contact Name</label>
+            <input type="text" class="form-control" [(ngModel)]="task.ContactName"
+              name="contactName" required>
+              <!-- <div [hidden]="!contactName.required" class="alert alert-danger">
+                Contact Name is required
+              </div> -->
+          </div>
+          <div class="form-group">
+            <label>Task Type</label>
+            <input type="text" class="form-control" [(ngModel)]="task.TaskType" 
+            name="taskType" required>
+              <!-- <div [hidden]="!taskType.required" class="alert alert-danger">
+                Task Type is required
+              </div> -->
+          </div>
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" class="form-control" [(ngModel)]="task.DueDate" 
+            name="dueDate" required>
+              <!-- <div [hidden]="!dueDate.required" class="alert alert-danger">
+                Due Date is required
+              </div> -->
+          </div>
+          <div class="form-group">
+            <label>Task Description</label>
+            <textarea class="form-control" rows="5" [(ngModel)]="task.TaskDesc" 
+             name="taskDesc" required></textarea>
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!editTaskFrom.form.valid">Confirm</button>
+          </div>
+          <!-- <pre>{{editTaskFrom.value|json}}</pre> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Task -->
+<div class="modal fade" id="deleteTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLongTitle">Confirm Delete</h2>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to permantly delete this task?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="deleteTask(task.TaskId)">Confirm Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
