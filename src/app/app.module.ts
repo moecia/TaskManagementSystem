@@ -8,6 +8,8 @@ import { HttpClientModule }    from '@angular/common/http';
 import { TasksComponent } from './tasks/tasks.component';
 import { FormsModule }   from '@angular/forms';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
+import { TaskDetailsService } from './task-details.service';
+import { TasksGuardService } from './tasks-guard.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,7 @@ import {AngularFontAwesomeModule} from 'angular-font-awesome';
     FormsModule,
     AngularFontAwesomeModule
   ],
-  providers: [],
+  providers: [TaskDetailsService, TasksGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

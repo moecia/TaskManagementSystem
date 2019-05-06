@@ -1,27 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Task } from './task';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+// const httpOptions = {
+//   headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('userToken')}`})
+// };
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskDetailsService {
 
-  private tasksUrl = 'http://localhost:50918/api/TaskDetails'
+  private tasksUrl = 'http://localhost:50918/api/TaskDetails';
 
   constructor(private http: HttpClient) { }
 
   getTasks() {
-    return this.http.get(this.tasksUrl);
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem('userToken')}` })
+    };//TODO:HTTPinterceptor
+    return this.http.get(this.tasksUrl, httpOptions);
   }
 
   getTask(id: number) {
-    return this.http.get(this.tasksUrl + `/${id}`);
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': `Bearer ${localStorage.getItem('userToken')}` })
+    };
+    return this.http.get(this.tasksUrl + `/${id}`, httpOptions);
   }
 
   addTask(task: Task) {
@@ -30,8 +35,13 @@ export class TaskDetailsService {
       "QuoteNumber" : "${task.quoteNumber}",
       "ContactName" : "${task.contactName}",
       "TaskDesc" : "${task.taskDesc}",
-      "TaskType" : "${task.taskType}"
+      "TaskType" : "${task.taskType}",
+      "DueDate" : "${task.dueDate}"
     }`;
+    debugger;
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('userToken')}` })
+    };
     return this.http.post(this.tasksUrl, body, httpOptions);
   }
 
@@ -45,10 +55,16 @@ export class TaskDetailsService {
       "TaskDesc" : "${task.taskDesc}",
       "TaskType" : "${task.taskType}"
     }`;
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('userToken')}` })
+    };
     return this.http.put(this.tasksUrl + `/${task.id}`, body, httpOptions);
   }
 
   deleteTask(id: Number) {
-    return this.http.delete(this.tasksUrl + `/${id}`);
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('userToken')}` })
+    };
+    return this.http.delete(this.tasksUrl + `/${id}`, httpOptions);
   }
 }

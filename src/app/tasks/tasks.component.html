@@ -2,10 +2,15 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item active" aria-current="page"><h5>Task Details</h5></li>
-    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#addTaskForm ">
+    <li class="breadcrumb-item active" aria-current="page">
+      <h5>Task Details</h5>
+    </li>
+      <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#logout ">
+        <i class="fa fa-sign-out"></i> Logout
+      </button>
+    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#addTaskForm">
       <i class="fa fa-plus"></i> Add Task
-    </button>    
+    </button>
   </ol>
 </nav>
 
@@ -58,52 +63,51 @@
         <form (ngSubmit)="addTask(addTaskFrom)" #addTaskFrom="ngForm">
           <div class="form-group">
             <label for="quoteNumber">Quote#</label>
-            <input type="number" class="form-control" 
-            [(ngModel)]="quoteNumber" name="quoteNumber"
-              required>
-            <!-- <div [hidden]="!quoteNumber.required" class="alert alert-danger">
+            <input type="number" class="form-control" [(ngModel)]="taskToAdd.QuoteNumber" name="afquoteNumber"
+              #afquoteNumber="ngModel" required>
+            <div [hidden]="afquoteNumber.valid || afquoteNumber.pristine" class="alert alert-danger">
               Quote# is required
-            </div> -->
+            </div>
           </div>
           <div class="form-group">
             <label>Quote Type</label>
-            <input type="text" class="form-control" 
-            [(ngModel)]="quoteType" name="quoteType" required>
-            <!-- <div [hidden]="!quoteType.required" class="alert alert-danger">
+            <input type="text" class="form-control" [(ngModel)]="taskToAdd.QuoteType" name="afquoteType"
+              #afquoteType="ngModel" required>
+            <div [hidden]="afquoteType.valid || afquoteType.pristine" class="alert alert-danger">
               Quote Type is required
-            </div> -->
-          </div>
-          <div class="form-group">
-            <label>Due Date</label>
-            <input type="date" class="form-control"
-             [(ngModel)]="dueDate" name="dueDate" required>
-             <!-- <div [hidden]="!dueDate.required" class="alert alert-danger">
-              Due Date is required
-            </div> -->
+            </div>
           </div>
           <div class="form-group">
             <label>Contact Name</label>
-            <input type="text" class="form-control" 
-            [(ngModel)]="contactName" name="contactName" required>
-            <!-- <div [hidden]="!contactName.required" class="alert alert-danger">
+            <input type="text" class="form-control" [(ngModel)]="taskToAdd.ContactName" name="afcontactName"
+              #afcontactName="ngModel" required>
+            <div [hidden]="afcontactName.valid || afcontactName.pristine" class="alert alert-danger">
               Contact Name is required
-            </div> -->
+            </div>
           </div>
           <div class="form-group">
             <label>Task Type</label>
-            <input type="text" class="form-control" 
-            [(ngModel)]="taskType" name="taskType" required>
-            <!-- <div [hidden]="!taskType.required" class="alert alert-danger">
+            <input type="text" class="form-control" [(ngModel)]="taskToAdd.TaskType" name="aftaskType" #aftaskType="ngModel"
+              required>
+            <div [hidden]="aftaskType.valid || aftaskType.pristine" class="alert alert-danger">
               Task Type is required
-            </div> -->
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="datetime-local" class="form-control" [(ngModel)]="taskToAdd.DueDate" name="afdueDate" #afdueDate="ngModel"
+              required>
+            <div [hidden]="afdueDate.valid || afdueDate.pristine" class="alert alert-danger">
+              Due Date is required
+            </div>
           </div>
           <div class="form-group">
             <label>Task Description</label>
-            <textarea class="form-control" rows="5" 
-            [(ngModel)]="taskDesc" name="taskDesc" required></textarea>
-            <!-- <div [hidden]="!taskDesc.required" class="alert alert-danger">
-              Task Type is required
-            </div> -->
+            <textarea class="form-control" rows="5" [(ngModel)]="taskToAdd.TaskDesc" name="aftaskDesc" #aftaskDesc="ngModel"
+              required></textarea>
+            <div [hidden]="aftaskDesc.valid || aftaskDesc.pristine" class="alert alert-danger">
+              Task Description is required
+            </div>
           </div>
           <div class="form-group">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -153,7 +157,7 @@
             <tr>
               <th>Due Date</th>
               <td>
-                {{task.DueDate}}
+                {{task.DueDate | date:'yyyy/MM/dd'}}
               </td>
             </tr>
             <tr>
@@ -181,64 +185,66 @@
         <h2 class="modal-title" id="exampleModalLongTitle">Update Task</h2>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="updateTask(editTaskFrom, task.TaskId)" #editTaskFrom="ngForm">
+        <form (ngSubmit)="updateTask(task.TaskId)" #editTaskFrom="ngForm">
           <div class="form-group">
-            <label for="taskStatus">Task Status</label>
-            <select class="form-control" id="taskStatus">
-              <option>Open</option>
-              <option>Close</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Quote#</label>
-            <input type="number" class="form-control" [(ngModel)]="task.QuoteNumber"
-              name="quoteNumber" required>
-              <!-- <div [hidden]="task.QuoteNumber.required" class="alert alert-danger">
-                Quote# is required
-              </div> -->
+            <div class="form-group">
+              <label for="taskStatus">Task Status</label>
+              <select class="form-control" id="taskStatus">
+                <option>Open</option>
+                <option>Close</option>
+              </select>
+            </div>
+            <label for="quoteNumber">Quote#</label>
+            <input type="number" class="form-control" [(ngModel)]="task.QuoteNumber" name="quoteNumber"
+              #quoteNumber="ngModel" required>
+            <div [hidden]="quoteNumber.valid || quoteNumber.pristine" class="alert alert-danger">
+              Quote# is required
+            </div>
           </div>
           <div class="form-group">
             <label>Quote Type</label>
-            <input type="text" class="form-control" [(ngModel)]="task.QuoteType"
-              name="quoteType" required>
-              <!-- <div [hidden]="!quoteType.required" class="alert alert-danger">
-                Quote Type is required
-              </div> -->
+            <input type="text" class="form-control" [(ngModel)]="task.QuoteType" name="quoteType"
+              #quoteType="ngModel" required>
+            <div [hidden]="quoteType.valid || quoteType.pristine" class="alert alert-danger">
+              Quote Type is required
+            </div>
           </div>
-          <div class=" form-group">
+          <div class="form-group">
             <label>Contact Name</label>
-            <input type="text" class="form-control" [(ngModel)]="task.ContactName"
-              name="contactName" required>
-              <!-- <div [hidden]="!contactName.required" class="alert alert-danger">
-                Contact Name is required
-              </div> -->
+            <input type="text" class="form-control" [(ngModel)]="task.ContactName" name="contactName"
+              #contactName="ngModel" required>
+            <div [hidden]="contactName.valid || contactName.pristine" class="alert alert-danger">
+              Contact Name is required
+            </div>
           </div>
           <div class="form-group">
             <label>Task Type</label>
-            <input type="text" class="form-control" [(ngModel)]="task.TaskType" 
-            name="taskType" required>
-              <!-- <div [hidden]="!taskType.required" class="alert alert-danger">
-                Task Type is required
-              </div> -->
+            <input type="text" class="form-control" [(ngModel)]="task.TaskType" name="taskType" #taskType="ngModel"
+              required>
+            <div [hidden]="taskType.valid || taskType.pristine" class="alert alert-danger">
+              Task Type is required
+            </div>
           </div>
           <div class="form-group">
             <label>Due Date</label>
-            <input type="date" class="form-control" [(ngModel)]="task.DueDate" 
-            name="dueDate" required>
-              <!-- <div [hidden]="!dueDate.required" class="alert alert-danger">
-                Due Date is required
-              </div> -->
+            <input type="datetime-local" class="form-control" [(ngModel)]="task.DueDate" name="dueDate" #dueDate="ngModel"
+              required>
+            <div [hidden]="dueDate.valid || dueDate.pristine" class="alert alert-danger">
+              Due Date is required
+            </div>
           </div>
           <div class="form-group">
             <label>Task Description</label>
-            <textarea class="form-control" rows="5" [(ngModel)]="task.TaskDesc" 
-             name="taskDesc" required></textarea>
+            <textarea class="form-control" rows="5" [(ngModel)]="task.TaskDesc" name="taskDesc" #taskDesc="ngModel"
+              required></textarea>
+            <div [hidden]="taskDesc.valid || taskDesc.pristine" class="alert alert-danger">
+              Task Description is required
+            </div>
           </div>
           <div class="form-group">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary" [disabled]="!editTaskFrom.form.valid">Confirm</button>
           </div>
-          <!-- <pre>{{editTaskFrom.value|json}}</pre> -->
         </form>
       </div>
     </div>
@@ -263,3 +269,21 @@
     </div>
   </div>
 </div>
+
+<!-- Logout -->
+<div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="exampleModalLabel">Log out</h2>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to logout?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="logout()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
